@@ -1,0 +1,92 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <string>
+
+using namespace std;
+
+// Define a structure for personal records
+struct PersonalRecord {
+    string name;
+    string dob;
+    string phoneNumber;
+};
+
+// Function to display a personal record
+void displayRecord(const PersonalRecord& record) {
+    cout << "Name: " << record.name << "\tDOB: " << record.dob << "\tPhone: " << record.phoneNumber << endl;
+}
+
+// Function to add a new personal record to the vector
+void addRecord(vector<PersonalRecord>& records) {
+    PersonalRecord newRecord;
+    cout << "Enter Name: ";
+    cin >> newRecord.name;
+    cout << "Enter DOB: ";
+    cin >> newRecord.dob;
+    cout << "Enter Telephone Number: ";
+    cin >> newRecord.phoneNumber;
+
+    records.push_back(newRecord);
+}
+
+int main() {
+    // Vector to store personal records
+    vector<PersonalRecord> records;
+
+    char choice;
+    do {
+        cout << "\n1. Add a new record\n";
+        cout << "2. Display all records\n";
+        cout << "3. Sort records by name\n";
+        cout << "4. Search record by name\n";
+        cout << "5. Exit\n";
+        cout << "Enter your choice: ";
+        cin >> choice;
+
+        switch (choice) {
+            case '1':
+                addRecord(records);
+                break;
+            case '2':
+                cout << "\nAll Records:\n";
+                for (const auto& record : records) {
+                    displayRecord(record);
+                }
+                break;
+            case '3':
+                  sort(records.begin(), records.end(), [](const PersonalRecord& a, const PersonalRecord& b)
+                 {
+                   return a.name.compare(b.name) < 0;
+                 });
+                 cout << "\nRecords sorted by name.\n";
+                  break;
+
+            case '4':
+                {
+                    string searchName;
+                    cout << "Enter the name to search: ";
+                    cin >> searchName;
+
+                    auto it = find_if(records.begin(), records.end(), [searchName](const PersonalRecord& record) {
+                        return record.name == searchName;
+                    });
+
+                    if (it != records.end()) {
+                        cout << "Record found:\n";
+                        displayRecord(*it);
+                    } else {
+                        cout << "Record not found.\n";
+                    }
+                }
+                break;
+            case '5':
+                cout << "Exiting program.\n";
+                break;
+            default:
+                cout << "Invalid choice. Please enter a valid option.\n";
+        }
+    } while (choice != '5');
+
+    return 0;
+}
