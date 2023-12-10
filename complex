@@ -1,0 +1,61 @@
+#include <iostream>
+
+using namespace std;
+
+class Complex {
+private:
+    double real;
+    double imaginary;
+
+public:
+    // Constructors
+    Complex() : real(0.0), imaginary(0.0) {}
+    Complex(double r, double i) : real(r), imaginary(i) {}
+
+    // Overloaded operators
+    Complex operator+(const Complex& other) const {
+        return Complex(real + other.real, imaginary + other.imaginary);
+    }
+
+    Complex operator*(const Complex& other) const {
+        return Complex(
+            real * other.real - imaginary * other.imaginary,
+            real * other.imaginary + imaginary * other.real
+        );
+    }
+
+    // Overloaded input and output operators
+    friend ostream& operator<<(ostream& os, const Complex& complex) {
+        os << complex.real << (complex.imaginary >= 0 ? "+" : "") << complex.imaginary << "i";
+        return os;
+    }
+
+    friend istream& operator>>(istream& is, Complex& complex) {
+        cout << "Enter real part: ";
+        is >> complex.real;
+        cout << "Enter imaginary part: ";
+        is >> complex.imaginary;
+        cout << "Entered complex number: " << complex.real << (complex.imaginary >= 0 ? "+" : "") << complex.imaginary << "i" << endl;
+        return is;
+    }
+};
+
+int main() {
+    Complex c1, c2, result;
+
+    cout << "Enter the first complex number:" << endl;
+    cin >> c1;
+
+    cout << "Enter the second complex number:" << endl;
+    cin >> c2;
+
+    // Addition
+    result = c1 + c2;
+    cout << "Sum: " << result << endl;
+
+    // Multiplication
+    result = c1 * c2;
+    cout << "Product: " << result << endl;
+
+    return 0;
+}
