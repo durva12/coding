@@ -1,0 +1,90 @@
+#include <iostream>
+#include <string>
+#include <iomanip>
+#include <stdexcept>
+
+using namespace std;
+
+class Publication {
+public:
+    string title;
+    float price;
+
+    // Use a default constructor for the base class
+    Publication() : title(""), price(0.0) {}
+
+    // Parameterized constructor for the base class
+    Publication(const string &title, float price) : title(title), price(price) {}
+
+    // Use virtual destructor for potential polymorphic behavior
+    virtual ~Publication() {}
+};
+
+class Book : public Publication {
+public:
+    int page_count;
+
+    // Use the member initializer list for initialization
+    Book(const string &title, float price, int page_count)
+        : Publication(title, price), page_count(page_count) {}
+};
+
+class Tape : public Publication {
+public:
+    float playing_time;
+
+    // Use the member initializer list for initialization
+    Tape(const string &title, float price, float playing_time)
+        : Publication(title, price), playing_time(playing_time) {}
+};
+
+int main() {
+    try {
+        string book_title, tape_title;
+        float book_price, tape_price, tape_playtime;
+        int book_page_count;
+
+        cout << "Enter Book Information:" << endl;
+        cout << "Title: ";
+        getline(cin, book_title);
+        cout << "Price: $";
+        cin >> book_price;
+        cout << "Page count: ";
+        cin >> book_page_count;
+
+        if (book_price == 0.0 || book_page_count == 0) {
+            throw invalid_argument("Please enter valid data for the book.");
+        }
+
+        cin.ignore(); // Clear the newline character from the input buffer
+
+        cout << "\nEnter Tape Information:" << endl;
+        cout << "Title: ";
+        getline(cin, tape_title);
+        cout << "Price: $";
+        cin >> tape_price;
+        cout << "Playing time (in minutes): ";
+        cin >> tape_playtime;
+
+        if (tape_price == 0.0 || tape_playtime == 0.0) {
+            throw invalid_argument("Please enter valid data for the tape.");
+        }
+
+        Book book(book_title, book_price, book_page_count);
+        Tape tape(tape_title, tape_price, tape_playtime);
+
+        cout << "\nBook information:" << endl;
+        cout << "Title: " << book.title << endl;
+        cout << "Price: $" << fixed << setprecision(2) << book.price << endl;
+        cout << "Page count: " << book.page_count << endl;
+
+        cout << "\nTape information:" << endl;
+        cout << "Title: " << tape.title << endl;
+        cout << "Price: $" << fixed << setprecision(2) << tape.price << endl;
+        cout << "Playing time: " << tape.playing_time << " minutes" << endl;
+    } catch (const exception &e) {
+        cerr << "An exception occurred: " << e.what() << endl;
+    }
+
+    return 0;
+}
