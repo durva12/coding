@@ -1,0 +1,50 @@
+#include <iostream>
+#include <fstream>
+#include <string>
+
+int main() {
+    // Create and write to an output file
+    std::ofstream outputFile("example.txt");
+
+    if (!outputFile) {
+        std::cerr << "Error opening output file!\n";
+        return 1;
+    }
+
+    // Get user input and write it to the file
+    std::string userInput;
+    std::cout << "Enter information to write to the file (type 'exit' to finish):\n";
+
+    while (true) {
+        std::getline(std::cin, userInput);
+
+        if (userInput == "exit") {
+            break;
+        }
+
+        outputFile << userInput << '\n';
+    }
+
+    // Close the output file
+    outputFile.close();
+
+    // Open the file again for input
+    std::ifstream inputFile("example.txt");
+
+    if (!inputFile) {
+        std::cerr << "Error opening input file!\n";
+        return 1;
+    }
+
+    // Read and display information from the file
+    std::cout << "\nContents of the file:\n";
+    std::string line;
+    while (std::getline(inputFile, line)) {
+        std::cout << line << '\n';
+    }
+
+    // Close the input file
+    inputFile.close();
+
+    return 0;
+}
